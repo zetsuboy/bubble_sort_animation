@@ -58,4 +58,5 @@ user-select: none;
 .element {
 background: blue;
 border-radius: 5%;
+transition: transform 0.5s;
 }

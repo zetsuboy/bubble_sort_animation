@@ -1,12 +1,14 @@
-var elements = [];
+var elements = [], translates = [];
 
 function create_elements() {
 	elements = [];
+	translates = [];
 	document.getElementById("sort_space").innerHTML = "";
 	var number_of_elements = parseInt(document.getElementById("number_of_elements").value);
 	for (let i = 0; i < number_of_elements; i++) {
 		let x = Math.floor(Math.random() * 81 + 10)
 		elements.push(x);
+		translates.push(0);
 	}
 	for (let i = 0; i < number_of_elements; i++) {
 		var element = document.createElement('div');
@@ -22,16 +24,15 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const swap = async function (nodeA, nodeB) {
-	const parentA = nodeA.parentNode;
-	const siblingA = nodeA.nextSibling === nodeB ? nodeA : nodeA.nextSibling;
-
-	var animationA = nodeA.animate({transform: `translateX(${(600 / elements.length)}px)`}, { duration: 500 });
-	var animationB = nodeB.animate({transform: `translateX(-${(600 / elements.length)}px)`}, { duration: 500 });
+const swap = async function (nodeA, nodeB, j) {
+	translates[j] += 600 / elements.length;
+	translates[j+1] -= 600 / elements.length;
+	nodeA.style.transform = `translateX(${translates[j]}px)`;
+	nodeB.style.transform = `translateX(${translates[j+1]}px)`;
 	await sleep(500);
-
-	nodeB.parentNode.insertBefore(nodeA, nodeB);
-	parentA.insertBefore(nodeB, siblingA);
+	let temp = translates[j];
+	translates[j] = translates[j+1];
+	translates[j+1] = temp;
 };
 
 async function sort_elements() {
@@ -44,7 +45,8 @@ async function sort_elements() {
 
 				left_element = document.getElementById(`element${j}`);
 				right_element = document.getElementById(`element${j+1}`);
-				await swap(left_element, right_element);
+				
+				await swap(left_element, right_element, j);
 
 				left_element.setAttribute("id", `element${j+1}`);
 				right_element.setAttribute("id", `element${j}`);
