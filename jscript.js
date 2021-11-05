@@ -26,9 +26,9 @@ const swap = async function (nodeA, nodeB) {
 	const parentA = nodeA.parentNode;
 	const siblingA = nodeA.nextSibling === nodeB ? nodeA : nodeA.nextSibling;
 
-	var animationA = nodeA.animate({transform: `translateX(${(600 / elements.length)}px)`}, { duration: 300 });
-	var animationB = nodeB.animate({transform: `translateX(-${(600 / elements.length)}px)`}, { duration: 300 });
-	await sleep(300);
+	var animationA = nodeA.animate({transform: `translateX(${(600 / elements.length)}px)`}, { duration: 500 });
+	var animationB = nodeB.animate({transform: `translateX(-${(600 / elements.length)}px)`}, { duration: 500 });
+	await sleep(500);
 
 	nodeB.parentNode.insertBefore(nodeA, nodeB);
 	parentA.insertBefore(nodeB, siblingA);
